@@ -136,4 +136,28 @@ export const deleteUrl = async (req,res) =>{
     }
 }
 
+export const getUsersMe = async (req,res) => {
+    let token = req.headers.authorization
+    const authorization  = token.slice(7)
+    try {
+        const user = await db.query("SELECT * FROM sessions WHERE token = $1",[authorization])
+        const User = await db.query("SELECT * FROM users WHERE id=$1",[user.rows[0].userId])
+        const shortUrls = await db.query(`SELECT * FROM "shortUrls" WHERE "userId" = $1 `,[user.rows[0].userId])
+        let visitCount = 0
+        shortUrls.rows.forEach((r)=>{
+            visitCount += r.visitCount
+        })
+        const response = {
+            id: user.rows[0].userId,
+            name: User.rows[0].name,
+            visitCount: visitCount,
+            shortenedUrls: shortUrls.rows
+        }
+        res.send(response)
+        } catch (e){
+            console.log(e)
+            res.status(500).send("pau no server")
+        }
+}
+
 
