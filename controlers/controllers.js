@@ -55,7 +55,8 @@ export const loginUser = async (req, res) => {
 export const shortUrl = async (req,res) => {
     const {url} = req.body
     const nanoId = nanoid(8)
-    const {authorization} = req.headers
+    let token = req.headers.authorization
+    const authorization  = token.slice(7)
     const user  = await db.query("SELECT * FROM sessions WHERE token = $1",[authorization])
     try {
      await db.query(`INSERT INTO "shortUrls"("shortUrl",url,"visitCount","userId") VALUES ($1,$2,$3,$4)`,[nanoId,url,1,user.rows[0].userId])
@@ -113,7 +114,8 @@ export const openUrl = async (req,res) => {
 
 export const deleteUrl = async (req,res) =>{
     const  {id} = req.params
-    const {authorization} = req.headers
+    let token = req.headers.authorization
+    const authorization  = token.slice(7)
     try {
         const user = await db.query("SELECT * FROM sessions WHERE token = $1",[authorization])
         const shortUrl = await db.query(`SELECT * FROM "shortUrls" WHERE id = $1 `,[id])

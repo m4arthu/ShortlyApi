@@ -11,4 +11,4 @@ app.use(router)
 
 app.listen(port,()=>{
     console.log("Server rodando  da porta 5000")
-})
+}) 
