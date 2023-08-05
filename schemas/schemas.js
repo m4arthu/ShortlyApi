@@ -13,5 +13,5 @@ export  const loginSchema = Joi.object({
 })
 
 export const shortUrlSchema = Joi.object({
-     url: Joi.string().required()
+     url: Joi.string().required().uri()
 })
