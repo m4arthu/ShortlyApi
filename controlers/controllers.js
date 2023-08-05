@@ -85,6 +85,7 @@ export  const  getUrl = async (req,res) =>{
         res.send(response)
 
     } catch (e){
+        console.log(e)
         res.status(500).send("pau no  server")
     }
 }
