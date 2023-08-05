@@ -45,7 +45,7 @@ export const loginUser = async (req, res) => {
             res.send({token})
             return
         }
-        res.send(session.rows[0].token)
+        res.send({token:session.rows[0].token})
     } catch (e) {
         console.log(e)
         res.status(500).send(e)
@@ -61,7 +61,7 @@ export const shortUrl = async (req,res) => {
     try {
      await db.query(`INSERT INTO "shortUrls"("shortUrl",url,"visitCount","userId") VALUES ($1,$2,$3,$4)`,[nanoId,url,1,user.rows[0].userId])
      const urlId = await db.query(`SELECT * FROM "shortUrls" WHERE url = $1`,[url])
-     res.send({
+     res.status(201).send({
         id: urlId.rows[0].id,
         shortUrl:urlId.rows[0].shortUrl
      })
