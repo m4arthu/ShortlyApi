@@ -27,7 +27,8 @@ SET default_table_access_method = heap;
 CREATE TABLE public.sessions (
     id integer NOT NULL,
     token text NOT NULL,
-    "userId" integer NOT NULL
+    "userId" integer NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now()
 );
 
 
@@ -59,8 +60,9 @@ CREATE TABLE public."shortUrls" (
     id integer NOT NULL,
     "shortUrl" text NOT NULL,
     url text NOT NULL,
-    "visitCount" integer,
-    "userId" integer NOT NULL
+    "visitCount" integer DEFAULT 1,
+    "userId" integer NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now()
 );
 
 
@@ -92,7 +94,8 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     name text NOT NULL,
     email text NOT NULL,
-    password text NOT NULL
+    password text NOT NULL,
+    "createdAt" timestamp without time zone DEFAULT now()
 );
 
 
@@ -141,49 +144,44 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.sessions VALUES (1, '57115cf0-a65b-4678-a71c-5d945a5db47c', 4);
-INSERT INTO public.sessions VALUES (2, 'b64a2ac9-ff9e-4e11-bd7d-a35b089cd972', 5);
-INSERT INTO public.sessions VALUES (3, '2e701555-e8aa-4590-aa04-077efd937f31', 6);
+INSERT INTO public.sessions VALUES (1, '87de76e5-1abc-4286-a2c3-bac2b80a3a5d', 1, '2023-08-05 10:55:26.912904');
+INSERT INTO public.sessions VALUES (2, '6941cab2-166b-4cde-9b77-52d0404f878f', 2, '2023-08-05 10:58:03.529434');
 
 
 --
 -- Data for Name: shortUrls; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public."shortUrls" VALUES (1, 'e6CVscfQ', 'https://www.tiktok.com/@crazycatlady_56/video/7225049026142506241', 1, 1);
+INSERT INTO public."shortUrls" VALUES (1, 'vz8HoGmP', 'https://www.youtube.com/watch?app=desktop&v=EEmOSjzaRO8', 2, 1, '2023-08-05 10:57:28.955606');
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users VALUES (1, 'luis arthur', 'luis@gmail.com', '123456');
-INSERT INTO public.users VALUES (2, 'luis arthur', 'luis@gmail.com', '123456');
-INSERT INTO public.users VALUES (3, 'luis arthur', 'luis2@gmail.com', '{}');
-INSERT INTO public.users VALUES (4, 'luis arthur', 'luis3@gmail.com', '$2b$10$NUqWWEfKi5gfoXr.H.Buo.4mk2ljZBrDHlJSNu4rPpRcMR5.opzMi');
-INSERT INTO public.users VALUES (5, 'luis arthur', 'luis4@gmail.com', '$2b$10$bFGN3ADNG91k.M8hJ6pQluMH3JJdildKWNwCostDB/Su9y9GDOQ0C');
-INSERT INTO public.users VALUES (6, 'Sabrina,minha bebe', 'sabrina@gmail.com', '$2b$10$1I8I1lliBGdD2SOeERoFUumKRf8kFJx/AHNwgKwbKtiSXAlg3bSNi');
+INSERT INTO public.users VALUES (1, 'luis arthur', 'luis@gmail.com', '$2b$10$bpgyy2ZyHBbdXrPhA5QwfuQilS4PeHkwI4fgxR6vdF0rZ646AebSS', '2023-08-05 10:38:09.713227');
+INSERT INTO public.users VALUES (2, 'luis arthur', 'luis2@gmail.com', '$2b$10$YVaD0NFY7KWUuRLYkwPChOB0/wzn8oaKqa5n06xsPeMVZKw8YmtP2', '2023-08-05 10:57:54.644977');
 
 
 --
 -- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.sessions_id_seq', 3, true);
+SELECT pg_catalog.setval('public.sessions_id_seq', 2, true);
 
 
 --
 -- Name: shortUrls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."shortUrls_id_seq"', 2, true);
+SELECT pg_catalog.setval('public."shortUrls_id_seq"', 1, true);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 6, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
