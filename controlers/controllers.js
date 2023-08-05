@@ -59,7 +59,7 @@ export const shortUrl = async (req,res) => {
     const authorization  = token.slice(7)
     const user  = await db.query("SELECT * FROM sessions WHERE token = $1",[authorization])
     try {
-     await db.query(`INSERT INTO "shortUrls"("shortUrl",url,"visitCount","userId") VALUES ($1,$2,$3,$4)`,[nanoId,url,1,user.rows[0].userId])
+     await db.query(`INSERT INTO "shortUrls"("shortUrl",url,"visitCount","userId") VALUES ($1,$2,$3,$4)`,[nanoId,url,0,user.rows[0].userId])
      const urlId = await db.query(`SELECT * FROM "shortUrls" WHERE url = $1`,[url])
      res.status(201).send({
         id: urlId.rows[0].id,
