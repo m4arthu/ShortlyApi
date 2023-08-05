@@ -163,7 +163,10 @@ export const getUsersMe = async (req,res) => {
 
 export const getRanking = async (req,res)=>{
     try {
-        const shortUrls = await db.query(`SELECT * FROM users LEFT JOIN  "shortUrls" ON "shortUrls"."userId" = users.id GROUP BY users.id,"shortUrls".id`)
+        const shortUrls = await db.query(`
+        SELECT * FROM users
+        LEFT JOIN  "shortUrls" ON "shortUrls"."userId" = users.id
+        GROUP BY users.name,users.id,"shortUrls".id,users.email,users.password,users."createdAt"`)
         const response = []
         for(let i = 0;i< shortUrls.rows.length;i++){
             let exist = false
