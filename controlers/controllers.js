@@ -42,7 +42,7 @@ export const loginUser = async (req, res) => {
             let token = uuid(user.rows[0].id)
             await db.query(`INSERT INTO sessions(token,"userId")
             VALUES ($1,$2)`, [token, userId ])
-            res.send(token)
+            res.send({token})
             return
         }
         res.send(session.rows[0].token)
@@ -79,6 +79,10 @@ export  const  getUrl = async (req,res) =>{
     }
     try {
         const shortUrlObjt = await db.query(`SELECT * FROM  "shortUrls" WHERE id = $1`,[id])
+         if(shortUrlObjt.rowCount === 0){
+            res.sendStatus(404)
+            return
+         }
         const response = shortUrlObjt.rows[0]
         delete response.visitCount
         delete response.userId
@@ -94,13 +98,12 @@ export const openUrl = async (req,res) => {
     const  {shortUrl} = req.params
     try {
     const url = await db.query(`SELECT * FROM "shortUrls" WHERE "shortUrl" = $1 `,[shortUrl])
-    const newUrl = url.rows[0]
     if(url.rowCount ===  0 ){
         res.sendStatus(404)
         return
     }
-    newUrl.rows[0].visitCount++
-    await db.query(`UPDATE "shortUrls" SET "visitCount" = $1`,[newUrl.rows[0].visitCount])
+    url.rows[0].visitCount++
+    await db.query(`UPDATE "shortUrls" SET "visitCount" = $1`,[url.rows[0].visitCount])
     res.redirect(url.rows[0].url)
     } catch (e){
         console.log(e)
