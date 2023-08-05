@@ -1,7 +1,7 @@
 import  express from "express"
 import { validateSchema } from "../middleweres/validateSchema.js"
 import { loginSchema, registerSchema, shortUrlSchema } from "../schemas/schemas.js"
-import { loginUser, registerUser, shortUrl,getUrl,openUrl,deleteUrl,getUsersMe} from "../controlers/controllers.js"
+import { loginUser, registerUser, shortUrl,getUrl,openUrl,deleteUrl,getUsersMe,getRanking} from "../controlers/controllers.js"
 import { tokenValidate } from "../middleweres/validateToken.js"
 const app = express()
 app.post("/signup",validateSchema(registerSchema),registerUser)
@@ -11,4 +11,5 @@ app.get("/urls/:id",getUrl)
 app.get("/urls/open/:shortUrl",openUrl)
 app.delete("/urls/:id",tokenValidate,deleteUrl)
 app.get("/users/me",tokenValidate,getUsersMe)
+app.get("/ranking",getRanking)
 export const router = app

@@ -103,7 +103,7 @@ export const openUrl = async (req,res) => {
         res.sendStatus(404)
         return
     }
-    url.rows[0].visitCount++
+    url.rows[0].visitCount += 1
     await db.query(`UPDATE "shortUrls" SET "visitCount" = $1`,[url.rows[0].visitCount])
     res.redirect(url.rows[0].url)
     } catch (e){
@@ -161,3 +161,35 @@ export const getUsersMe = async (req,res) => {
 }
 
 
+export const getRanking = async (req,res)=>{
+    try {
+        const shortUrls = await db.query(`SELECT * FROM users LEFT JOIN  "shortUrls" ON "shortUrls"."userId" = users.id GROUP BY users.id,"shortUrls".id`)
+        const response = []
+        for(let i = 0;i< shortUrls.rows.length;i++){
+            let exist = false
+            let responsePush = {
+                id:shortUrls.rows[i].userId,
+                name:shortUrls.rows[i].name,
+                linksCount:1,
+                visitCount:shortUrls.rows[i].visitCount
+            }
+                response.forEach((r)=>{
+                    if(r.id === responsePush.id){
+                     r.linksCount+= 1
+                     r.visitCount += responsePush.visitCount
+                    exist = true
+                } 
+            })
+               response.push(responsePush)      
+        } 
+        response.sort(function(a,b) {
+            return a.visitCount > b.visitCount ? -1 : a.visitCount < b.visitCount ? 1 : 0;
+        })
+        res.send(response)
+
+    } catch(e){
+        console.log(e)
+        res.status(500).send(e)
+    }
+
+}
